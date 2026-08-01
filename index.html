@@ -293,7 +293,7 @@ body{font-family:var(--font-sans);background:transparent;color:var(--color-text)
     <span class="section-label" data-i18n="inquiry_label">Request a Quote</span>
     <h2 class="section-title" data-i18n="inquiry_title">Send Us an Inquiry</h2>
     <p style="color:var(--color-text-secondary);font-size:var(--text-lg);margin-bottom:var(--space-10);text-align:center" data-i18n="inquiry_desc">Interested in our products? Fill out the form and our team will get back to you within 24 hours.</p>
-    <form class="inquiry__form" id="inquiryForm" onsubmit="handleInquiry(event)">
+    <form class="inquiry__form" id="inquiryForm" action="https://formspree.io/f/mykrqkwp" method="POST" onsubmit="handleInquiry(event)">
       <div class="inquiry__row">
         <div class="inquiry__field"><label class="inquiry__label" for="inq-name" data-i18n="form_name">Full Name *</label><input class="inquiry__input" type="text" id="inq-name" name="name" data-i18n-placeholder="form_name_ph" required></div>
         <div class="inquiry__field"><label class="inquiry__label" for="inq-email" data-i18n="form_email">Email Address *</label><input class="inquiry__input" type="email" id="inq-email" name="email" data-i18n-placeholder="form_email_ph" required></div>
@@ -571,13 +571,24 @@ document.querySelectorAll('.showcase__image').forEach(img => { img.addEventListe
 // Inquiry form
 function handleInquiry(e) {
   e.preventDefault();
-  const f = e.target;
-  const n = f.querySelector('#inq-name').value, em = f.querySelector('#inq-email').value;
-  const c = f.querySelector('#inq-company').value, co = f.querySelector('#inq-country').value;
-  const p = f.querySelector('#inq-phone').value, pr = f.querySelector('#inq-product').value;
-  const m = f.querySelector('#inq-message').value;
-  window.open('mailto:sales2@ykbsktech.com?subject=' + encodeURIComponent('Inquiry: ' + pr + ' from ' + n) + '&body=' + encodeURIComponent('Name: ' + n + '\nEmail: ' + em + '\nCompany: ' + c + '\nCountry: ' + co + '\nPhone/WeChat: ' + p + '\nProduct: ' + pr + '\n\nMessage:\n' + m));
-  f.style.display = 'none'; document.getElementById('inquirySuccess').classList.add('visible');
+  var f = document.getElementById('inquiryForm');
+  var data = new FormData(f);
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://formspree.io/f/mykrqkwp', true);
+  xhr.setRequestHeader('Accept', 'application/json');
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      f.style.display = 'none';
+      document.getElementById('inquirySuccess').classList.add('visible');
+    } else {
+      alert('Submission failed. Please email us directly at sales2@ykbsktech.com');
+    }
+  };
+  xhr.onerror = function() {
+    alert('Network error. Please email us directly at sales2@ykbsktech.com');
+  };
+  xhr.send(data);
+  return false;
 }
 </script>
 </body>
