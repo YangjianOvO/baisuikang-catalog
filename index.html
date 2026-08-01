@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="description" content="Baisuikang Cleaning Appliances - Professional-grade floor scrubbers, fabric cleaners, steam cleaners. OEM/ODM manufacturer in Yongkang, China.">
 <title>Baisuikang - Cleaning Appliances</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <style>
 :root{
   --color-primary:#60a5fa;--color-primary-light:#93bbfd;--color-bg:#0a0a0f;--color-surface:#14141f;
@@ -141,6 +143,7 @@ body{font-family:var(--font-sans);background:transparent;color:var(--color-text)
 .contact__group p,.contact__group a{display:block;color:var(--color-text-secondary);font-size:var(--text-base);line-height:2.2;text-decoration:none;transition:color var(--transition-fast)}
 .contact__group a:hover{color:var(--color-primary-light)}
 .contact__note{text-align:center;color:var(--color-text-muted);font-size:var(--text-sm);line-height:1.8;padding-top:var(--space-8);border-top:1px solid var(--color-border)}
+.contact__map{width:100%;height:300px;border-radius:var(--radius-xl);overflow:hidden;margin-top:var(--space-8);border:1px solid var(--color-border)}
 
 .footer{padding:var(--space-8) var(--space-6);border-top:1px solid var(--color-border);text-align:center;position:relative;z-index:2}
 .footer__text{font-size:var(--text-sm);color:var(--color-text-muted)}
@@ -336,6 +339,7 @@ body{font-family:var(--font-sans);background:transparent;color:var(--color-text)
       <div class="contact__group"><h3 class="contact__heading" data-i18n="contact_wc_h">WeChat</h3><p>Y13967921411</p><p>bsk13335978999</p><p>NadaNihil</p></div>
     </div>
     <p class="contact__note" data-i18n="contact_note">We welcome OEM/ODM inquiries and look forward to building long-term partnerships with distributors worldwide.</p>
+    <div class="contact__map" id="map"></div>
   </div>
 </section>
 
@@ -589,6 +593,20 @@ function handleInquiry(e) {
   };
   xhr.send(data);
   return false;
+}
+
+// Map
+var mapEl = document.getElementById('map');
+if (mapEl) {
+  var map = L.map('map').setView([28.905, 120.035], 13);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+  L.marker([28.905, 120.035]).addTo(map)
+    .bindPopup('<b>Yongkang Baisuikang Technology</b><br>Yongkang, Zhejiang, China')
+    .openPopup();
+  setTimeout(function(){ map.invalidateSize(); }, 500);
 }
 </script>
 </body>
